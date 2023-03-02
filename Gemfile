@@ -30,7 +30,7 @@ gem "require_all"
 group :development do
   # Used to generate seed data
   # https://github.com/faker-ruby/faker
-  gem "faker", "~> 2.18"
+  gem 'faker'
 
   # Auto-reload the server when files are changed
   # https://github.com/alexch/rerun
