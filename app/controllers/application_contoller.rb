@@ -38,8 +38,8 @@ class ApplicationController < Sinatra::Base
       member = Member.create(
         name: params[:name],
         email: params[:email],
-        user_id: params[:user_id]
-        project_id: params[:project_id]
+        user_id: params[:user.id],
+        project_id: params[:project.id]
       )
       member.to_json
     end
@@ -48,8 +48,8 @@ class ApplicationController < Sinatra::Base
       member.update(
         name: params[:name],
         email: params[:email],
-        user_id: params[:user_id]
-        project_id: params[:project_id]
+        user_id: params[:user.id],
+        project_id: params[:project.id]
       )
       member.to_json
     end
