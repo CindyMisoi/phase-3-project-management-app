@@ -1,91 +1,56 @@
 class ApplicationController < Sinatra::Base
-    set :default_content_type, 'application/json'
+  register Sinatra::CrossOrigin
+  # @api: Enable CORS Headers
+  configure do
+    enable :cross_origin
     
-    # Add routes
-    get '/users' do 
-      users = User.all.order(created_at: :asc)
-      users.to_json
-    end
-    post '/users' do
-      user = User.create(
-        username: params[:username],
-        email: params[:email],
-        password: params[:password]
-      )
-      user.to_json
-    end
-    patch '/users/:id' do
-      user = User.find(params[:id])
-      user.update(
-        username: params[:username],
-        email: params[:email],
-        password: params[:password]
-      )
-      user.to_json
-    end
-  
-    delete '/users/:id' do
-      user = User.find(params[:id])
-      user.destroy
-      user.to_json
-    end
-    # Members
-    get '/members' do 
-      members = Member.all.order(created_at: :asc)
-      members.to_json
-    end
-    post '/members' do
-      member = Member.create(
-        name: params[:name],
-        email: params[:email],
-        user_id: params[:user.id],
-        project_id: params[:project.id]
-      )
-      member.to_json
-    end
-    patch '/members/:id' do
-      member = Member.find(params[:id])
-      member.update(
-        name: params[:name],
-        email: params[:email],
-        user_id: params[:user.id],
-        project_id: params[:project.id]
-      )
-      member.to_json
-    end
-  
-    delete '/members/:id' do
-      member = Member.find(params[:id])
-      member.destroy
-      member.to_json
-    end
-    # Projects
-    get '/projects' do 
-      projects = Project.all.order(created_at: :asc)
-      projects.to_json
-    end
-    post '/projects' do
-      project = Project.create(
-        name: params[:name],
-        title: params[:title],
-        description: params[:description]
-      )
-      project.to_json
-    end
-    patch '/projects/:id' do
-      project = Project.find(params[:id])
-      project.update(
-        name: params[:name],
-        title: params[:title],
-        description: params[:description]
-      )
-      project.to_json
-    end
-  
-    delete '/projects/:id' do
-      project = Project.find(params[:id])
-      project.destroy
-      project.to_json
+        set :allow_origin, "*" # allows any origin(domain) to send fetch requests to your API
+        set :allow_methods, [:get, :post, :patch, :delete, :options] # allows these HTTP verbs
+        set :allow_credentials, true
+        set :max_age, 1728000
+        set :expose_headers, ['Content-Type']
+  end
+
+  before do
+    response.headers['Access-Control-Allow-Origin'] = '*'
+  end
+
+  options "*" do
+    response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
+    response.headers["Access-Control-Allow-Origin"] = '*'
+    200
+  end
+
+  # @api: Format the json response
+  def json_response(code: 200, data: nil)
+    status = [200, 201].include?(code) ? "SUCCESS" : "FAILED"
+    headers['Content-Type'] = 'application/json'
+    if data
+      [ code, { data: data, message: status }.to_json ]
     end
   end
-  
+
+  # @api: Format all common JSON error responses
+  def error_response(code, e)
+    json_response(code: code, data: { error: e.message })
+  end
+
+# @helper: not found error formatter
+def not_found_response
+  json_response(code: 404, data: { error: "You seem lost. That route does not exist." })
+end
+
+# @api: 404 handler
+not_found do
+  not_found_response
+end
+
+# @views: Format the js responses
+  def js_response(file)
+    headers['Content-Type'] = 'text/html'
+    js file
+  end
+end
+    
+   
