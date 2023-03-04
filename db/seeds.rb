@@ -6,6 +6,7 @@ puts "🌱 Seeding data..."
     username: Faker::Internet.username,
     email: "#{Faker::Internet.username}@gmail.com",
     password: Faker::Internet.password(min_length: 8),
+    image: Faker::Avatar.image
     )
 end
 
@@ -29,7 +30,8 @@ project = Project.create(
       name: Faker::Name.name,
       email: "#{Faker::Internet.name}@gmail.com",
       user: user,
-      project: project
+      project: project,
+      image: Faker::Avatar.image
     )
   end
 end
