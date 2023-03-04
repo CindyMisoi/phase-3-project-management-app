@@ -15,8 +15,10 @@ end
   # create a projects with random data
 project = Project.create(
     name: Faker::ProgrammingLanguage.name,
-    title: Faker::Lorem.sentence,
     description: Faker::Lorem.sentence,
+    author: Faker::Name.name, 
+    status:['On Hold', 'Ready to start', 'Working on it', 'Completed'].sample,
+    date: Faker::Date.backward(days: 14)
   )
   
   # create between 1 and 5 members for each project
