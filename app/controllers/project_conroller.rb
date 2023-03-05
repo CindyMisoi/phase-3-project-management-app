@@ -8,8 +8,10 @@ class ProjectController < Sinatra::Base
       post '/projects' do
         project = Project.create(
           name: params[:name],
-          title: params[:title],
-          description: params[:description]
+          description: params[:description],
+          status: params[:status],
+          date: params[:date],
+          author: params[:author]
         )
         project.to_json
       end
@@ -17,8 +19,10 @@ class ProjectController < Sinatra::Base
         project = Project.find(params[:id])
         project.update(
           name: params[:name],
-          title: params[:title],
-          description: params[:description]
+          description: params[:description],
+          status: params[:status],
+          date: params[:date],
+          author: params[:author]
         )
         project.to_json
       end

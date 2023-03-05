@@ -11,7 +11,7 @@ class UserController < Sinatra::Base
       end
       post '/users' do
         user = User.create(
-          username: params[:username],
+          name: params[:name],
           email: params[:email],
           password: params[:password]
         )
@@ -20,7 +20,7 @@ class UserController < Sinatra::Base
       patch '/users/:id' do
         user = User.find(params[:id])
         user.update(
-          username: params[:username],
+          name: params[:name],
           email: params[:email],
           password: params[:password]
         )

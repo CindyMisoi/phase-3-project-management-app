@@ -3,7 +3,7 @@ puts "🌱 Seeding data..."
 # Make 5 users
 5.times do
   User.create(
-    username: Faker::Internet.username,
+    name: Faker::Internet.username,
     email: "#{Faker::Internet.username}@gmail.com",
     password: Faker::Internet.password(min_length: 8),
     image: Faker::Avatar.image
@@ -30,7 +30,7 @@ project = Project.create(
     # A member belongs to a project and a user, so we must provide those foreign keys
     Member.create(
       name: Faker::Name.name,
-      email: "#{Faker::Internet.name}@gmail.com",
+      email: "#{Faker::Internet.username}@gmail.com",
       user: user,
       project: project,
       image: Faker::Avatar.image
